@@ -1,0 +1,411 @@
+﻿@model WebRequests.Models.NewRequestModel
+
+@{
+    ViewBag.Title = "New Request Page";
+}
+
+@using (Html.BeginForm("SaveRequest", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @id = "form" }))
+{
+    <h3>Customer Care <i>New</i> Request</h3>
+    <div class="row justify-content-xl-center">
+        <div class="card-deck col-lg-6">
+            <div class="card text-white bg-primary">
+                <div class="card-header bg-info">Section 1. Names and Descriptions</div>
+                <div class="card-body">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.RequestName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.RequestName, new { @class = "col-lg-12 form-control", @id = "title" })
+                            @Html.ValidationMessageFor(m => m.RequestName, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.RequestDescription, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.RequestDescription, new { @maxlength = "1000", @class = "col-lg-12 form-control ", @rows = 5, @cols = 80 })
+                            @Html.ValidationMessageFor(m => m.RequestDescription, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Requestor, new { @class = "label" })
+                            <button id='loaderR' class="btn btn-success" type="button" disabled style="display:none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                            @Html.EditorFor(m => m.Requestor, new { htmlAttributes = new { @class = "col-lg-12 form-control" } })
+                            @Html.ValidationMessageFor(m => m.RequestName, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BusinessOwner, new { @class = "label" })
+                            <button id='loaderB' class="btn btn-success small" type="button" disabled style="display:none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                            @Html.EditorFor(m => m.BusinessOwner, new { htmlAttributes = new { @class = "col-lg-12 form-control" } })
+                            @Html.ValidationMessageFor(m => m.BusinessOwner, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedRequestType, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedRequestType, Model.RequestTypeList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12" id="lnkLinkToExist">
+                        <div class="form-group text-success">
+                            @Html.LabelFor(m => m.LinkToExistingReport, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.LinkToExistingReport, new { @maxlength = "1000", @class = "col-lg-12 form-control disabled", @rows = 5, @cols = 80 })
+                            @Html.ValidationMessageFor(m => m.LinkToExistingReport, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedBusinessImpact, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedBusinessImpact, Model.BusinessImpactList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BusinessImpactDescription, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.BusinessImpactDescription, new { @maxlength = "1000", @class = "col-lg-12 form-control", @rows = 5, @cols = 80 })
+                            @Html.ValidationMessageFor(m => m.BusinessImpactDescription, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+
+                    @{string dateValue = Model.DesiredDueDate.Value.ToString("yyyy-MM-dd");}
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DesiredDueDate, new { @class = "label" })
+                            @Html.EditorFor(m => m.DesiredDueDate, new { htmlAttributes = new { @class = "col-lg-12 form-control", @type = "date", @value = dateValue } })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck col-lg-5">
+            <div class="card bg-primary">
+                <div class="card-header bg-warning">Section 2. Selectors and Links</div>
+                <div class="card-body">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedBU, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedBU, Model.BUList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedFunctionalArea, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedFunctionalArea, Model.FunctionalAreaList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedWE, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedWE, Model.WEList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedTacticalProject, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedTacticalProject, Model.TacticalProjectList, new { @class = "col-lg-12 form-control" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12" id="lnkTacticalProject">
+                        <div class="form-group text-success">
+                            @Html.LabelFor(m => m.TacticalProjectName, new { @class = "label" })
+                            @Html.TextBoxFor(m => m.TacticalProjectName, new { @class = "col-lg-12 form-control" })
+                            @Html.ValidationMessageFor(m => m.TacticalProjectName, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedDataSource, new { @class = "label" })
+                            @Html.DropDownListFor(model => model.SelectedDataSource, Model.DataSourceList, new { @class = "col-lg-12 form-control" })
+                            <button id='loaderDiv1' class="btn btn-success" type="button" disabled style="display:none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-success" id="lnkSelectedReportArea">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SelectedReportArea, new { @class = "label" })
+                            <div id="tblReportArea">
+                                @Html.Action("ShowPartialReportArea")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-success" id="lnkLinkToExternalDS">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LinkToExternalDS, new { @class = "label" })
+                            @Html.TextAreaFor(m => m.LinkToExternalDS, new { @maxlength = "1000", @class = "col-lg-12 form-control", @rows = 5, @cols = 80 })
+                            @Html.ValidationMessageFor(m => m.LinkToExternalDS, null, new { @class = "col-lg-12 text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <input type="file" id="dataFile" name="upload" class="btn big bg-success" multiple="multiple" title="" />
+                            <button id='loaderF' class="btn btn-success" type="button" disabled style="display:none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div id="tblAttachRes">
+                            @Html.Action("ShowPartialUploadFiles")
+                            @Html.Action("ShowPartialDeleteFile")
+                        </div>
+                        <div class="overflow-auto">
+                            <div class="col-md-12">
+                                <table class="table" id="FilesList" style="visibility:hidden; margin-top:30px">
+                                    <tr>
+                                        <th>
+                                            Attachment(s)
+                                        </th>
+                                        <th class="text-center">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer bg-primary">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <input type="submit" id="btnCancel" value="Cancel" formaction=@Url.Action("Index") formmethod="post" class="btn btn-danger" formnovalidate="formnovalidate" new { onclick="return confirm('Are you goint to exit without saving?');" } />
+                            <input type="submit" id="btn-upload" value="Save Request" name="UploadBtn" class="btn btn-success float-right" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.TextAreaFor(m => m.SessionGuid, new { @class = "d-none" })
+    </div>
+}
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Requestor").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Home/ShowRequestor",
+                        type: "POST",
+                        dataType: "json",
+                        data: { SearchString: request.term },
+                        beforeSend: function () {
+                            $("#loaderR").show();
+                        },
+                        success: function (data) {
+                            $("#loaderR").hide();
+                            response($.map(data, function (item) {
+                                return { label: item.UserName, value: item.Email };
+                            }));
+
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#BusinessOwner").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Home/ShowRequestor",
+                        type: "POST",
+                        dataType: "json",
+                        data: { SearchString: request.term },
+                        beforeSend: function () {
+                            $("#loaderB").show();
+                        },
+                        success: function (data) {
+                            $("#loaderB").hide();
+                            response($.map(data, function (item) {
+                                return { label: item.UserName, value: item.Email };
+                            }));
+
+                        }
+                    })
+                },
+                messages: {
+                    noResults: "", results: ""
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $('#SelectedDataSource').on('change', function () {
+            var selectedDS = $('#SelectedDataSource').val();
+            $.ajax({
+                data: { SelectedDataSource: selectedDS, requestId: -1 },
+                beforeSend: function () {
+                    $('#SelectedDataSource').prop('disabled', true);
+                    $('#SelectedReportArea').prop('disabled', true);
+
+                    if (selectedDS > 3) {
+                        $('#lnkSelectedReportArea').prop('hidden', true);
+                    }
+                    else {
+                        $('#lnkLinkToExternalDS').prop('hidden', true);
+                    }
+                },
+                url: "/Home/ShowPartialReportArea",
+                type: "POST",
+                success: function (result) {
+                    $('#tblReportArea').html(result);
+                    $('#SelectedDataSource').prop('disabled', false);
+
+                    if (selectedDS <= 3) {
+                        $('#lnkSelectedReportArea').prop('hidden', false);
+                    }
+                    else {
+                        $('#lnkLinkToExternalDS').prop('hidden', false);
+                    }
+                },
+                error: function (e) {
+                    alert('Error occured');
+                }
+            });
+        }).change();
+    </script>
+
+    <script type="text/javascript">
+        $('#SelectedRequestType').on('change', function () {
+            var SelectedVal = $('#SelectedRequestType').val()
+            $('#lnkLinkToExist').prop('hidden', true);
+
+            if (SelectedVal >= 3) {
+                $('#lnkLinkToExist').prop('hidden', false);
+            }
+
+        }).change();
+
+    </script>
+
+
+    <script type="text/javascript">
+        $('#SelectedTacticalProject').on('change', function () {
+            var SelectedVal = $('#SelectedTacticalProject').val()
+            $('#lnkTacticalProject').prop('hidden', true);
+
+            if (SelectedVal > 1) {
+                $('#lnkTacticalProject').prop('hidden', false);
+            }
+
+        }).change();
+
+    </script>
+
+    <script type="text/javascript">
+        var formdata = new FormData();
+        var guid = $('#SessionGuid').val();
+        $("#dataFile").on("change", function () {
+            formdata.append("SessionGuid", guid);
+            var fileInput = document.getElementById('dataFile');
+
+            for (i = 0; i < fileInput.files.length; i++) {
+
+                var sfilename = fileInput.files[i].name;
+                let srandomid = Math.random().toString(36).substring(7);
+                formdata.append(sfilename, fileInput.files[i]);
+
+                var markup = "<tr id='" + srandomid + "'><td>" + sfilename + "</td><td class='text-center'><a href='javascript: void(0)' onclick='DeleteFile(\"" + srandomid + "\",\"" + sfilename +
+                    "\")'><span class='fa fa-times text-danger fa-lg' title='Delete this file'></span></a></td></tr>";
+                $("#FilesList tbody").append(markup);
+
+            }
+            chkatchtbl();
+            $('#dataFile').val('');
+
+            $.ajax({
+                beforeSend: function () {
+                    $("#loaderF").show();
+                },
+                url: '/Home/ShowPartialUploadFiles',
+                method: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formdata,
+                async: true,
+                success: function (result) {
+
+                    //$("#tblBody > tr").remove();
+                    $('#tblAttachRes').append("<span class='fa fa-check-circle-o text-success'></>");
+
+                    $("#loaderF").hide();
+                    scroll_to_anchor();
+                },
+                error: function (err) {
+                    $('#tblAttachRes').append("<span class='fa fa-exclamation-circle text-danger'></>");
+                    alert(err.statusText);
+                    $("#loaderF").hide();
+                }
+            });
+        });
+
+        function DeleteFile(Fileid, FileName) {
+            $.ajax({
+                beforeSend: function () {
+                    $("#loaderF").show();
+                    formdata.delete(FileName);
+                },
+                url: '/Home/ShowPartialDeleteFile',
+                method: "POST",
+                dataType: "json",
+                data: { sessionId: guid, fileName: FileName },
+                async: true,
+                success: function (result) {
+
+                    //$("#tblBody > tr").remove();
+                    $('#tblAttachRes').append("<span class='fa fa-trash-o text-success'></>");
+
+                    $("#loaderF").hide();
+
+                    $("#" + Fileid).remove();
+                    chkatchtbl();
+                    scroll_to_anchor();
+                },
+                error: function (err) {
+                    $('#tblAttachRes').append("<span class='fa fa-trash-o text-danger'></>");
+                    alert(err.statusText);
+                    $("#loaderF").hide();
+                }
+            });
+
+        }
+        function chkatchtbl() {
+            if ($('#FilesList tr').length > 1) {
+                $("#FilesList").css("visibility", "visible");
+            } else {
+                $("#FilesList").css("visibility", "hidden");
+            }
+        }
+
+        function scroll_to_anchor() {
+            $("html, body").animate({ scrollTop: $(document).height() }, 100);
+        }
+
+    </script>
+
+
+
+}
+
+
+
+

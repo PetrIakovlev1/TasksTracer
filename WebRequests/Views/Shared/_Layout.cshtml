@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @{string appName = "Next Step"; }
+    <title>@ViewBag.Title - @appName</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light navbar-collapse">
+        <div class="container">
+            <a class="navbar-brand" @Html.ActionLink("New Request", "NewRequest", "Home")</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" @Html.ActionLink("Request List", "Index", "Home")</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid body-content" style="margin-top:30px">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @appName</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/tempus-dominus")
+    @Scripts.Render("~/bundles/datatables")
+
+
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script src="~/Scripts/theme.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/Scripts/datatables.min.js"></script>
+</body>
+</html>

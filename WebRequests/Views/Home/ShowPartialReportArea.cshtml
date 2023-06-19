@@ -1,0 +1,6 @@
+﻿@model WebRequests.Models.ReportArea
+
+@if (Model.ReportAreaList != null)
+{
+    @Html.DropDownListFor(model => model.SelectedReportArea, Model.ReportAreaList, new { @class = "col-lg-12 form-control" })
+}

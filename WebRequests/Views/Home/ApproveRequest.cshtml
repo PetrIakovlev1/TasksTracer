@@ -1,0 +1,27 @@
+﻿@model WebRequests.Models.ApproveModel
+
+@{
+
+    ViewBag.Title = "Approve Page";
+}
+
+<form id="getRequestList">
+    <div class="row justify-content-xl-center">
+        <div class="card-deck col-lg-12">
+            <div class="card text-white bg-primary">
+                <div class="card-header bg-info h4">Approve result</div>
+                <div class="card-body bg-secondary">
+                    <div class="col-lg-12 h3">
+                        @Html.DisplayFor(model => model.ApproveMessage)
+                    </div>
+                </div>
+                <div class="card-footer ">
+                    <div class="form-group d-flex">
+                        <input type="submit" id="btnOk" value="Back to Request List" formaction=@Url.Action("Index") formmethod="post" class="btn btn-success" } />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

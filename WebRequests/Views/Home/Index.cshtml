@@ -1,0 +1,118 @@
+﻿@model WebRequests.Models.RequestsModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Home Page";
+}
+
+<form id="getRequestList">
+    <div class="row justify-content-xl-center">
+        <div class="card-deck col-lg-12">
+            <div class="card text-white bg-primary">
+                <div class="card-header bg-info">Customer Care Request List</div>
+                <div class="card-body bg-secondary">
+                    <div class="col-lg-12">
+                        @Html.LabelFor(model => model.SelectedFilter, new { @class = "label" })
+                        <div class="form-group d-flex">
+                            @Html.DropDownListFor(model => model.SelectedFilter, Model.FilterList, new { @class = "form-control" })
+                            <button id='loaderDiv1' class="btn btn-success" type="button" disabled style="display:none">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-auto">
+                        <div class="col-lg-12">
+                            <div>
+                                <table id="tblLocal" class="table table-primary table-hover">
+                                    <thead class="bg-dark">
+                                        <tr class="text-center">
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().id)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().RequestName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().CreatedDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().Requestor)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().BusinessOwner)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().Approved)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().SelectedBusinessImpact)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().SelectedTacticalProject)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().DesiredDueDate)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().SelectedPriority)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().AssignedTo)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().OnHold)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.newRequest.FirstOrDefault().PromiseDate)
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tblRequests">
+                                        @Html.Action("ShowPartialRequestList")
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="~/Scripts/jquery-3.6.4.min.js"></script>
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblLocal').DataTable();
+            $('.dataTables_filter input').css('background-color', 'white');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('#SelectedFilter').on('change', function () {
+            $.ajax({
+                data: { filterName: $('#SelectedFilter').val() },
+                beforeSend: function () {
+                    $("#loaderDiv1").show();
+                    $('#SelectedFilter').prop('disabled', true);
+                },
+                url: "/Home/ShowPartialRequestList",
+                type: "POST",
+                success: function (result) {
+                    $("#loaderDiv1").hide();
+                    $('#tblRequests').html(result);
+                    $('#SelectedFilter').prop('disabled', false);
+                }
+            });
+        }).change();
+    </script>
+
+
+}
+
+
+
+

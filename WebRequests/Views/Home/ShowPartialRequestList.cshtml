@@ -1,0 +1,67 @@
+﻿@model WebRequests.Models.RequestsModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Request List";
+}
+
+@for (var i = 0; i < Model.newRequest.Count(); i++)
+{
+    string desiredDueDate = Model.newRequest[i].DesiredDueDate.Value.ToString("dd-MMM-yyyy");
+    string createdDate = Model.newRequest[i].CreatedDate.Value.ToString("dd-MMM-yyyy");
+    string promiseDate = string.Empty;
+
+    if (Model.newRequest[i].PromiseDate != null)
+    {
+        promiseDate = Model.newRequest[i].PromiseDate.Value.ToString("dd-MMM-yyyy");
+    }
+
+    <tr class="text-center">
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].id)
+        </td>
+        <td>
+            @Html.ActionLink(Model.newRequest[i].RequestName.ToString(), "EditRequest", "Home", new { id = Model.newRequest[i].id, filterValue = Model.SelectedFilter }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(model => createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].Requestor)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].BusinessOwner)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].Approved)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].SelectedBusinessImpact)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].SelectedTacticalProject)
+        </td>
+        <td>
+            @Html.DisplayFor(model => desiredDueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].SelectedPriority)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].AssignedTo)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.newRequest[i].OnHold)
+        </td>
+        <td>
+            @Html.DisplayFor(model => promiseDate)
+        </td>
+
+    </tr>
+}
+
+
+
+
+
